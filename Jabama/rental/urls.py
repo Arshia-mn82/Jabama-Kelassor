@@ -8,4 +8,5 @@ urlpatterns = [
     path("bookings/<int:pk>/", BookingDetailView.as_view(), name="booking-detail"),
     path("reviews/", ReviewListCreateView.as_view(), name="review-list-create"),
     path("reviews/<int:pk>/", ReviewDetailView.as_view(), name="review-detail"),
+    path("bookings/<int:pk>/confirm/", ConfirmBookingView.as_view()),
 ]
