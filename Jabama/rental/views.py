@@ -15,7 +15,6 @@ def welcome(request):
     return JsonResponse("Welcome to Jabama", safe=False)
 
 
-# Villa Views
 class VillaListCreateView(ListCreateAPIView):
     queryset = Villa.objects.all()
     serializer_class = VillaSerializer
@@ -37,7 +36,6 @@ class VillaDetailView(RetrieveUpdateDestroyAPIView):
         return Villa.objects.filter(user=self.request.user)
 
 
-# Booking Views
 class BookingListCreateView(ListCreateAPIView):
     queryset = Booking.objects.all()
     serializer_class = BookingDateSerializer
@@ -56,7 +54,6 @@ class BookingDetailView(RetrieveUpdateDestroyAPIView):
         return Booking.objects.filter(user=self.request.user)
 
 
-# Review Views
 class ReviewListCreateView(ListCreateAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
