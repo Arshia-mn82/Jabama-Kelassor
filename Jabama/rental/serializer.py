@@ -5,6 +5,7 @@ class BookingDateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
         fields = "__all__"
+        
 
 class VillaSerializer(serializers.ModelSerializer):
     bookings = BookingDateSerializer(many=True, read_only=True)

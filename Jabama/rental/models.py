@@ -39,6 +39,7 @@ class Booking(models.Model):
     end_date = models.DateField()
     number_of_people = models.PositiveIntegerField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending")
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     def __str__(self):
         return f"{self.user.username} - {self.villa.name} ({self.start_date} to {self.end_date})"
@@ -70,9 +71,7 @@ class Booking(models.Model):
         return total_price
 
     def save(self, *args, **kwargs):
-        if self.number_of_people > self.villa.capacity:
-            raise ValueError("Number of people exceeds villa capacity")
-
+        self.total_price = self.calculate_price()
         overlapping_bookings = Booking.objects.filter(
             villa=self.villa, start_date__lt=self.end_date, end_date__gt=self.start_date
         ).exclude(id=self.id)
@@ -80,12 +79,7 @@ class Booking(models.Model):
         if overlapping_bookings.exists():
             raise ValueError("Villa is already booked for these dates.")
 
-        overlapping_user_bookings = Booking.objects.filter(
-            user=self.user, start_date__lt=self.end_date, end_date__gt=self.start_date
-        ).exclude(id=self.id)
 
-        if overlapping_user_bookings.exists():
-            raise ValueError("You have already booked a villa for these dates.")
 
         super().save(*args, **kwargs)
 
